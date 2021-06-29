@@ -242,3 +242,7 @@ p {
   border-radius: var(--radius);
   cursor: pointer;
 }
+
+.crossed{
+  text-decoration: line-through;
+}
