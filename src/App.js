@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+const getLocalStorage = () => {
+  let list = localStorage.getItem("list");
+  if (list) {
+    return (list = JSON.parse(localStorage.getItem("list")));
+  } else {
+    return [];
+  }
+};
+const getLocalCompleted = () => {
+  let orderedList = localStorage.getItem("orderedList");
+  if (orderedList) {
+    return (orderedList = JSON.parse(localStorage.getItem("orderedList")));
+  } else {
+    return [];
+  }
+};
 function List() {
-  const [unorganizedNumbers, setUnorganized] = useState([]);
+  const [unorganizedNumbers, setUnorganized] = useState(getLocalStorage());
   const [input, setInput] = useState(0);
-  const [orderedNumbers, setOrderedNumbers] = useState([]);
+  const [orderedNumbers, setOrderedNumbers] = useState(getLocalCompleted());
+
+  useEffect(() => {
+    localStorage.setItem("list", JSON.stringify(unorganizedNumbers));
+  }, [unorganizedNumbers]);
+
+  useEffect(() => {
+    localStorage.setItem("orderedList", JSON.stringify(orderedNumbers));
+  }, [orderedNumbers]);
+
   const checkedStyle = { textDecoration: "line-through" };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,7 +41,6 @@ function List() {
   const handleChange = (e) => {
     const val = e.target.value;
     let noZero = val.replace(/^0+/, "");
-
     setInput(noZero);
   };
   const handleUnorganized = (id) => {
