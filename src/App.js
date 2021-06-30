@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 const getLocalStorage = () => {
   let list = localStorage.getItem("list");
   if (list) {
@@ -16,17 +16,20 @@ const getLocalCompleted = () => {
   }
 };
 function List() {
-  const [unorganizedNumbers, setUnorganized] = useState(getLocalStorage());
+  const refContainer = useRef(null);
+  const [numbersByDate, setByDate] = useState(getLocalStorage());
   const [input, setInput] = useState(0);
   const [orderedNumbers, setOrderedNumbers] = useState(getLocalCompleted());
 
   useEffect(() => {
-    console.log(unorganizedNumbers);
-    localStorage.setItem("list", JSON.stringify(unorganizedNumbers));
-  }, [unorganizedNumbers]);
+    refContainer.current.focus();
+  });
 
   useEffect(() => {
-    console.log(orderedNumbers);
+    localStorage.setItem("list", JSON.stringify(numbersByDate));
+  }, [numbersByDate]);
+
+  useEffect(() => {
     localStorage.setItem("orderedList", JSON.stringify(orderedNumbers));
   }, [orderedNumbers]);
 
@@ -39,8 +42,9 @@ function List() {
       id: date.getTime().toString(),
       date: date,
     };
-    setUnorganized([...unorganizedNumbers, number]);
+    setByDate([...numbersByDate, number]);
     setInput(0);
+    refContainer.current.focus();
   };
   const handleChange = (e) => {
     const val = e.target.value;
@@ -48,11 +52,9 @@ function List() {
     setInput(noZero);
   };
   const handleUnorganized = (id) => {
-    const Item = unorganizedNumbers.find((item) => item.id === id);
-    const newUnorderedList = unorganizedNumbers.filter(
-      (item) => item.id !== id
-    );
-    setUnorganized(newUnorderedList);
+    const Item = numbersByDate.find((item) => item.id === id);
+    const newUnorderedList = numbersByDate.filter((item) => item.id !== id);
+    setByDate(newUnorderedList);
     const reOrderedNumbers = [...orderedNumbers, Item].sort((a, b) => {
       return Number(b.input) - Number(a.input);
     });
@@ -62,23 +64,23 @@ function List() {
   const handleOrdered = (id) => {
     const Item = orderedNumbers.find((item) => item.id === id);
     const newOrderedList = orderedNumbers.filter((item) => item.id !== id);
-    const newOrderedListbyDate = [...unorganizedNumbers, Item].sort(function (
-      a,
-      b
-    ) {
-      var c = new Date(a.date);
-      var d = new Date(b.date);
-      return c - d;
+    const newOrderedListbyDate = [...numbersByDate, Item].sort((a, b) => {
+      return new Date(a.date) - new Date(b.date);
     });
     setOrderedNumbers(newOrderedList);
-    setUnorganized(newOrderedListbyDate);
+    setByDate(newOrderedListbyDate);
   };
 
   return (
     <>
       <form className="form" onSubmit={handleSubmit}>
         <div>
-          <input onChange={handleChange} type="number" value={input} />
+          <input
+            onChange={handleChange}
+            type="number"
+            value={input}
+            ref={refContainer}
+          />
         </div>
         <button type="submit" value="submit">
           add{" "}
@@ -86,8 +88,8 @@ function List() {
       </form>
       <div className="lists">
         <div className="list-wrapper">
-          {unorganizedNumbers.length === 0 ? null : <h3>unorganized</h3>}
-          {unorganizedNumbers.map((number) => {
+          {numbersByDate.length === 0 ? null : <h3>By Date:</h3>}
+          {numbersByDate.map((number) => {
             return (
               <div className="item" key={number.id}>
                 <h4>Number: {number.input}</h4>
@@ -100,7 +102,7 @@ function List() {
         </div>
         <div className="list-wrapper">
           {" "}
-          {orderedNumbers.length === 0 ? null : <h3>ordered</h3>}
+          {orderedNumbers.length === 0 ? null : <h3>By Number:</h3>}
           {orderedNumbers.map((number) => {
             return (
               <div className="item" key={number.id}>
