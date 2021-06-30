@@ -21,19 +21,23 @@ function List() {
   const [orderedNumbers, setOrderedNumbers] = useState(getLocalCompleted());
 
   useEffect(() => {
+    console.log(unorganizedNumbers);
     localStorage.setItem("list", JSON.stringify(unorganizedNumbers));
   }, [unorganizedNumbers]);
 
   useEffect(() => {
+    console.log(orderedNumbers);
     localStorage.setItem("orderedList", JSON.stringify(orderedNumbers));
   }, [orderedNumbers]);
 
   const checkedStyle = { textDecoration: "line-through" };
   const handleSubmit = (e) => {
     e.preventDefault();
+    const date = new Date();
     const number = {
       input,
-      id: new Date().getTime().toString(),
+      id: date.getTime().toString(),
+      date: date,
     };
     setUnorganized([...unorganizedNumbers, number]);
     setInput(0);
@@ -58,8 +62,16 @@ function List() {
   const handleOrdered = (id) => {
     const Item = orderedNumbers.find((item) => item.id === id);
     const newOrderedList = orderedNumbers.filter((item) => item.id !== id);
+    const newOrderedListbyDate = [...unorganizedNumbers, Item].sort(function (
+      a,
+      b
+    ) {
+      var c = new Date(a.date);
+      var d = new Date(b.date);
+      return c - d;
+    });
     setOrderedNumbers(newOrderedList);
-    setUnorganized([...unorganizedNumbers, Item]);
+    setUnorganized(newOrderedListbyDate);
   };
 
   return (
