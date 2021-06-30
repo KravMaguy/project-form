@@ -161,7 +161,7 @@ p {
 
 .container {
   text-align: center;
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 .btn {
   display: inline-block;
@@ -214,7 +214,7 @@ p {
   background: var(--clr-white);
   max-width: var(--fixed-width);
   margin: 0 auto;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   padding: 1rem 2rem;
   border-radius: var(--radius);
 }
@@ -241,8 +241,4 @@ p {
   text-transform: capitalize;
   border-radius: var(--radius);
   cursor: pointer;
-}
-
-.crossed{
-  text-decoration: line-through;
 }
