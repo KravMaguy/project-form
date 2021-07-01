@@ -242,3 +242,19 @@ p {
   border-radius: var(--radius);
   cursor: pointer;
 }
+
+.country-select{
+  margin-top: 3rem;
+  background: var(--clr-grey-10);
+  border-color: var(--clr-green-dark);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+}
+
+.greenbutton{
+  background-color: var(--clr-green-light);
+}
+
+.whitebutton{
+  background-color: var(--clr-white);
+}

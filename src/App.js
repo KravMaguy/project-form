@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div className="container">
       {/* <List /> */}
-      {/* <ButtonGrid /> */}
+      <ButtonGrid />
       <CountryIso />
     </div>
   );

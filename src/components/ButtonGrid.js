@@ -18,11 +18,8 @@ function Button() {
 
   return [...Array(n)].map((e, id) => (
     <button
-      style={{
-        backgroundColor: clickedButton.includes(id) ? "#7CFC00" : "FFFFF",
-      }}
+      className={clickedButton.includes(id) ? "greenbutton" : "whitebutton"}
       onClick={() => handleClick(id)}
-      className=""
       key={id}
     >
       Change color
