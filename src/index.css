@@ -245,10 +245,13 @@ p {
 
 .country-select{
   margin-top: 3rem;
-  background: var(--clr-grey-10);
-  border-color: var(--clr-green-dark);
+  background: var(--clr-white);
+  border-color: var(--clr-primary-8);
   border-radius: var(--radius);
   padding: 0.25rem 0.5rem;
+  max-width: -webkit-fill-available;
+  box-shadow: var(--light-shadow);
+
 }
 
 .greenbutton{
@@ -258,3 +261,29 @@ p {
 .whitebutton{
   background-color: var(--clr-white);
 }
+
+.button-grid{
+  margin: 3px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+
+}
+
+.button-component{
+  padding: 15px;
+  margin: 2px;
+  border-radius: var(--radius);
+  box-shadow: var(--dark-shadow);
+}
+
+@media screen and (max-width: 480px) {
+  .button-grid{
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+  }
+}
+
+
+
+
