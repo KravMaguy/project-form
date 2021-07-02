@@ -262,8 +262,11 @@ p {
   background-color: var(--clr-white);
 }
 
-.button-grid{
+.button-selector{
   margin-top: 3rem;
+  display: block;
+}
+.button-grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
