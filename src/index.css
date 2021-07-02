@@ -263,11 +263,10 @@ p {
 }
 
 .button-grid{
-  margin: 3px;
+  margin-top: 3rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-
 }
 
 .button-component{
@@ -275,8 +274,14 @@ p {
   margin: 2px;
   border-radius: var(--radius);
   box-shadow: var(--dark-shadow);
+  transition: 0.2s all cubic-bezier(0,1.5,1,1.5);
 }
-
+.button-component:active {
+  transform: scale(0.9);
+  /* Scaling button to 0.98 to its original size */
+  box-shadow: 3px 2px 22px 1px rgba(89, 230, 136, 0.24);
+  /* Lowering the shadow */
+}
 @media screen and (max-width: 480px) {
   .button-grid{
     grid-template-columns: repeat(1, 1fr);
