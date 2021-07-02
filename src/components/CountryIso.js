@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const fetchCountries = (url) => {
@@ -12,16 +12,18 @@ function CountryIso() {
   const url = "https://restcountries.eu/rest/v2/all";
   const [countries, setCountries] = useState([]);
   useEffect(() => {
-    console.log("get the api and put in state");
     fetchCountries(url).then((countriesInfo) => setCountries(countriesInfo));
   }, []);
   console.log(countries);
   return (
     <select className="country-select">
       {countries.map((option) => (
-        <option value={option.alpha2Code}>{option.name}</option>
+        <option key={option.alpha2Code} value={option.alpha2Code}>
+          {option.name}
+        </option>
       ))}
     </select>
   );
 }
+
 export default CountryIso;

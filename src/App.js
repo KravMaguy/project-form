@@ -5,9 +5,9 @@ import CountryIso from "./components/CountryIso";
 export default function App() {
   return (
     <div className="container">
-      {/* <List /> */}
-      <ButtonGrid />
       <CountryIso />
+      <ButtonGrid />
+      {/* <List /> */}
     </div>
   );
 }

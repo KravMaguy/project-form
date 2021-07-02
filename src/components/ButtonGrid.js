@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function ButtonGrid() {
   //array of ids
-  const n = 16;
+  const idMaker = (number) => {
+    return Array.from(Array(number).keys());
+  };
+  const sixTeenIds = idMaker(16);
   const [clickedButton, setClickedButton] = useState([]);
   const handleClick = (id) => {
     if (clickedButton.includes(id)) {
@@ -15,7 +18,7 @@ function ButtonGrid() {
 
   return (
     <div className="button-grid">
-      {[...Array(n)].map((e, id) => (
+      {sixTeenIds.map((id) => (
         <button
           className={
             clickedButton.includes(id)
