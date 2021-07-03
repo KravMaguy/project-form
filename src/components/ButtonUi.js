@@ -25,7 +25,7 @@ function ButtonUi() {
         handleChange={handleChange}
         min={min}
         max={max}
-        value={number}
+        number={number}
       />
 
       <ButtonGrid

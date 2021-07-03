@@ -14,7 +14,7 @@ function CountryIso() {
   useEffect(() => {
     fetchCountries(url).then((countriesInfo) => setCountries(countriesInfo));
   }, []);
-  console.log(countries);
+  // console.log(countries);
   return (
     <select className="country-select">
       {countries.map((option) => (

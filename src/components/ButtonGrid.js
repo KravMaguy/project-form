@@ -4,6 +4,7 @@ export default function ButtonGrid({ handleClick, clickedButton, number }) {
     <div className="button-grid">
       {Array.from(Array(number).keys()).map((id) => (
         <Button
+          key={id}
           handleClick={handleClick}
           id={id}
           clickedButton={clickedButton}
