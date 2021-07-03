@@ -17,11 +17,13 @@ function CountryIso() {
   // console.log(countries);
   return (
     <select className="country-select">
-      {countries.map((option) => (
-        <option key={option.alpha2Code} value={option.alpha2Code}>
-          {option.name}
-        </option>
-      ))}
+      {countries.length
+        ? countries.map((option) => (
+            <option key={option.alpha2Code} value={option.alpha2Code}>
+              {option.name}
+            </option>
+          ))
+        : null}
     </select>
   );
 }
