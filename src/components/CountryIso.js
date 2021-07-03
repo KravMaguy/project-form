@@ -11,19 +11,26 @@ const fetchCountries = (url) => {
 function CountryIso() {
   const url = "https://restcountries.eu/rest/v2/all";
   const [countries, setCountries] = useState([]);
+  const [loaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    fetchCountries(url).then((countriesInfo) => setCountries(countriesInfo));
+    fetchCountries(url).then((countriesInfo) => {
+      setCountries(countriesInfo);
+      setIsLoaded(true);
+    });
   }, []);
-  // console.log(countries);
   return (
     <select className="country-select">
-      {countries.length
-        ? countries.map((option) => (
-            <option key={option.alpha2Code} value={option.alpha2Code}>
-              {option.name}
-            </option>
-          ))
-        : null}
+      {loaded ? (
+        countries.map((option) => (
+          <option key={option.alpha2Code} value={option.alpha2Code}>
+            {option.name}
+          </option>
+        ))
+      ) : (
+        <option value="Loading...">
+          Getting countries data please wait...
+        </option>
+      )}
     </select>
   );
 }
