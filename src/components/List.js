@@ -37,9 +37,11 @@ function List() {
   };
   const handleChange = (e) => {
     const val = e.target.value;
+    console.log("val: ", val);
     let noZero = val.replace(/^0+/, "");
     setInput(noZero);
   };
+
   const handleUnorganized = (id) => {
     const Item = numbersByDate.find((item) => item.id === id);
     const newUnorderedList = numbersByDate.filter((item) => item.id !== id);

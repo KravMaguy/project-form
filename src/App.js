@@ -1,13 +1,15 @@
 import React from "react";
-import List from "./components/List";
-import ButtonUi from "./components/ButtonUi";
-import CountryIso from "./components/CountryIso";
+// import List from "./components/List";
+// import ButtonUi from "./components/ButtonUi";
+// import CountryIso from "./components/CountryIso";
+import GitHubList from "./components/GitHubList";
 export default function App() {
   return (
-    <div className="container">
-      <CountryIso />
-      <ButtonUi />
+    <div className="container main">
+      {/* <CountryIso />
+      <ButtonUi /> */}
       {/* <List /> */}
+      <GitHubList />
     </div>
   );
 }

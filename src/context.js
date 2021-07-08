@@ -5,6 +5,7 @@ const AppContext = React.createContext();
 
 const initialState = {
   clickedButton: [],
+  number: 1,
 };
 
 const AppProvider = ({ children }) => {
@@ -20,12 +21,17 @@ const AppProvider = ({ children }) => {
   //   }
   // };
 
+  // const [number, setNumber] = useState(1);
+  const handleChange = (e) => {
+    // setNumber(Number(e.target.value));
+    dispatch({ type: "INCREASE", payload: Number(e.target.value) });
+  };
   const handleClick = (id) => {
-    dispatch({ type: "INCREASE", payload: id });
+    dispatch({ type: "BUTTON_COLOR", payload: id });
   };
 
   return (
-    <AppContext.Provider value={{ handleClick, ...state }}>
+    <AppContext.Provider value={{ handleChange, handleClick, ...state }}>
       {children}
     </AppContext.Provider>
   );
