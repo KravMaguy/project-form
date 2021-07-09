@@ -14,14 +14,12 @@ const GitHubList = () => {
       axios.get(`${BaseUrl}${facebook}`),
     ];
     Promise.all([...Issues])
-      .then(
-        axios.spread((...res) => {
-          const graphQLIssues = res[0].data;
-          const microsoftIssues = res[1].data;
-          const facebookIssues = res[2].data;
-          setIssues({ graphQLIssues, microsoftIssues, facebookIssues });
-        })
-      )
+      .then((res) => {
+        const graphQLIssues = res[0].data;
+        const microsoftIssues = res[1].data;
+        const facebookIssues = res[2].data;
+        setIssues({ graphQLIssues, microsoftIssues, facebookIssues });
+      })
       .catch((error) => {
         console.log("err", error);
       });
