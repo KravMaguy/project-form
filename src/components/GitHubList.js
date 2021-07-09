@@ -5,30 +5,21 @@ const GitHubList = () => {
   const microsoft = "microsoft/TypeScript/issues";
   const facebook = "facebook/react/issues";
   const graphQl = "graphql/graphql-js/issues";
-  const [microsoftissues, setMicrosoftIssues] = useState([]);
-  const [facebookissues, setFacebookIssues] = useState([]);
-  const [graphqlissues, setGraphQLissues] = useState([]);
-
-  const [microsoftReady, setMicrosoftReady] = useState(false);
-  const [facebookReady, setFacebookReady] = useState(false);
-  const [graphQlReady, setGraphQlReady] = useState(false);
+  const [issues, setIssues] = useState({});
 
   useEffect(() => {
-    const repo3 = axios.get(`${BaseUrl}${graphQl}`);
-    const repo1 = axios.get(`${BaseUrl}${microsoft}`);
-    const repo2 = axios.get(`${BaseUrl}${facebook}`);
-    Promise.all([repo1, repo2, repo3])
+    const Issues = [
+      axios.get(`${BaseUrl}${graphQl}`),
+      axios.get(`${BaseUrl}${microsoft}`),
+      axios.get(`${BaseUrl}${facebook}`),
+    ];
+    Promise.all([...Issues])
       .then(
-        axios.spread(function (res1, res2, res3) {
-          const res1data = res1.data;
-          const res2data = res2.data;
-          const res3data = res3.data;
-          setMicrosoftIssues(res1data);
-          setFacebookIssues(res2data);
-          setGraphQLissues(res3data);
-          setMicrosoftReady(true);
-          setFacebookReady(true);
-          setGraphQlReady(true);
+        axios.spread((...res) => {
+          const graphQLIssues = res[0].data;
+          const microsoftIssues = res[1].data;
+          const facebookIssues = res[2].data;
+          setIssues({ graphQLIssues, microsoftIssues, facebookIssues });
         })
       )
       .catch((error) => {
@@ -36,67 +27,70 @@ const GitHubList = () => {
       });
   }, []);
 
-  const removeIssue = (id, string) => {
-    let stateLocation;
-    string === "microsoft"
-      ? (stateLocation = microsoftissues)
-      : string === "facebook"
-      ? (stateLocation = facebookissues)
-      : (stateLocation = graphqlissues);
-    const newList = stateLocation.filter((item) => item.id !== id);
-    return string === "microsoft"
-      ? setMicrosoftIssues(newList)
-      : string === "facebook"
-      ? setFacebookIssues(newList)
-      : setGraphQLissues(newList);
+  const removeIssue = (id, repo, str) => {
+    const filteredRepo = repo.filter((item) => item.id !== id);
+    setIssues({ ...issues, [str]: filteredRepo });
   };
 
+  const { graphQLIssues, microsoftIssues, facebookIssues } = issues;
   return (
     <>
-      <h2 style={{ maxWidth: "100vw" }}>{microsoft}</h2>
+      <h2>{microsoft}</h2>
       <div>
-        {microsoftReady
-          ? microsoftissues.map((x) => {
+        {microsoftIssues && microsoftIssues.length > 0
+          ? microsoftIssues.map((x) => {
               return (
                 <div className="item" key={x.id}>
                   <h4>{x.title}</h4>
-                  <button onClick={() => removeIssue(x.id, "microsoft")}>
+                  <button
+                    onClick={() =>
+                      removeIssue(x.id, microsoftIssues, "microsoftIssues")
+                    }
+                  >
                     remove
                   </button>
                 </div>
               );
             })
-          : "loading microsoft issues"}
+          : `loading ${microsoft}`}
       </div>
       <h2>{facebook}</h2>
       <div>
-        {facebookReady
-          ? facebookissues.map((x) => {
+        {facebookIssues && facebookIssues.length > 0
+          ? facebookIssues.map((x) => {
               return (
                 <div className="item" key={x.id}>
                   <h4>{x.title}</h4>
-                  <button onClick={() => removeIssue(x.id, "facebook")}>
+                  <button
+                    onClick={() =>
+                      removeIssue(x.id, facebookIssues, "facebookIssues")
+                    }
+                  >
                     remove
                   </button>
                 </div>
               );
             })
-          : "loading facebook issues"}
+          : `loading ${facebook}`}
       </div>
       <h2>{graphQl}</h2>
       <div>
-        {graphQlReady
-          ? graphqlissues.map((x) => {
+        {graphQLIssues && graphQLIssues.length > 0
+          ? graphQLIssues.map((x) => {
               return (
                 <div className="item" key={x.id}>
                   <h4>{x.title}</h4>
-                  <button onClick={() => removeIssue(x.id, "graphQl")}>
+                  <button
+                    onClick={() =>
+                      removeIssue(x.id, graphQLIssues, "graphQLIssues")
+                    }
+                  >
                     remove
                   </button>
                 </div>
               );
             })
-          : "loading graphQl issues"}
+          : `loading ${graphQl}`}
       </div>
     </>
   );
