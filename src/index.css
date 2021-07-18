@@ -246,7 +246,7 @@ p {
 }
 
 .country-select{
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
   background: var(--clr-white);
   border-color: var(--clr-primary-8);
   border-radius: var(--radius);
