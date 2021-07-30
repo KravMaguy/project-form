@@ -1,44 +1,45 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-
-const BaseUrl = "http://localhost:3001/";
-const customers = "customers";
-const may = "05";
-const june = "06";
-const july = "07";
+import customerTransactions from "./customerData";
+const months = ["05", "06", "07"];
 const CustomerTable = () => {
   const [customerData, setCustomerData] = useState([]);
+
   useEffect(() => {
-    axios.get(`${BaseUrl}${customers}`).then(({ data }) => {
-      setCustomerData(data);
-    });
+    const timer = setTimeout(() => {
+      setCustomerData(customerTransactions);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const tdPoints = (transactions) => {
     let totalPoints = 0;
+    console.log(transactions);
     const monthPoints = (month) => {
-      let total = 0;
-      transactions.forEach((transaction) => {
-        let { price } = transaction;
-        if (transaction.date.split("-")[1] === month) {
-          if (price > 100) {
-            let doublepoints = (price - 100) * 2;
-            total = total + doublepoints;
-            price = price - doublepoints / 2;
-          }
-          if (price <= 100) {
-            total = total + 50;
-            totalPoints += total;
-          }
-        }
+      console.log(month);
+      const monthlyTransactions = transactions.filter(({ date }) => {
+        return new Date(date).getMonth() + 1 == month;
       });
-      return total;
+      const monthlyTotal = monthlyTransactions.reduce(function (
+        sum,
+        transaction
+      ) {
+        let { price } = transaction;
+        if (price > 100) {
+          return 50 + sum + (price - 100) * 2;
+        }
+        if (price <= 100) {
+          return sum + 50;
+        } else return sum;
+      },
+      0);
+      totalPoints += monthlyTotal;
+      return monthlyTotal;
     };
     return (
       <>
-        <td>{monthPoints(may)}</td>
-        <td>{monthPoints(june)}</td>
-        <td>{monthPoints(july)}</td>
+        {months.map((month) => {
+          return <td key={month}>{monthPoints(month)}</td>;
+        })}
         <td>{totalPoints}</td>
       </>
     );
@@ -48,28 +49,29 @@ const CustomerTable = () => {
     <div>
       <h1>Points</h1>
       <div>
-        {customerData.map((customer) => (
-          <table key={customer.id} className="customer-tables">
-            <thead>
-              <tr>
-                <th>Name</th>
-
-                <th>may</th>
-                <th>june</th>
-                <th>july</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  {customer.firstName} {customer.lastName}
-                </td>
-                {tdPoints(customer.transaction)}
-              </tr>
-            </tbody>
-          </table>
-        ))}
+        {customerData.length > 0
+          ? customerData.map((customer) => (
+              <table key={customer.id} className="customer-tables">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>may</th>
+                    <th>june</th>
+                    <th>july</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {customer.firstName} {customer.lastName}
+                    </td>
+                    {tdPoints(customer.transaction)}
+                  </tr>
+                </tbody>
+              </table>
+            ))
+          : "loading..."}
       </div>
     </div>
   );
