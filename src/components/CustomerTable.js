@@ -1,15 +1,24 @@
 import { useState, useEffect } from "react";
 import customerTransactions from "./customerData";
 const months = ["05", "06", "07"];
+
 const CustomerTable = () => {
   const [customerData, setCustomerData] = useState([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setCustomerData(customerTransactions);
-    }, 1000);
-    return () => clearTimeout(timer);
+    getData().then((data) => {
+      console.log(data, "data");
+      setCustomerData(data);
+    });
   }, []);
+
+  const getData = () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(customerTransactions);
+      }, 3000);
+    });
+  };
 
   const tdPoints = (transactions) => {
     let totalPoints = 0;
