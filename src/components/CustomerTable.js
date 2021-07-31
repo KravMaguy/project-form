@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import customerTransactions from "./customerData";
-const months = ["05", "06", "07"];
+
+const months = [5, 6, 7];
+
+const getData = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(customerTransactions);
+    }, 1000);
+  });
+};
 
 const CustomerTable = () => {
   const [customerData, setCustomerData] = useState([]);
@@ -12,21 +21,12 @@ const CustomerTable = () => {
     });
   }, []);
 
-  const getData = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(customerTransactions);
-      }, 3000);
-    });
-  };
-
   const tdPoints = (transactions) => {
     let totalPoints = 0;
-    console.log(transactions);
     const monthPoints = (month) => {
       console.log(month);
       const monthlyTransactions = transactions.filter(({ date }) => {
-        return new Date(date).getMonth() + 1 == month;
+        return new Date(date).getMonth() + 1 === month;
       });
       const monthlyTotal = monthlyTransactions.reduce(function (
         sum,
@@ -37,7 +37,10 @@ const CustomerTable = () => {
           return 50 + sum + (price - 100) * 2;
         }
         if (price <= 100) {
-          return sum + 50;
+          if (price <= 50) {
+            return sum;
+          }
+          return sum + (price - 50);
         } else return sum;
       },
       0);
