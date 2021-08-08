@@ -1,14 +1,68 @@
 import { useState, useEffect } from "react";
 import customerTransactions from "./customerData";
-const months = ["05", "06", "07"];
 
 const CustomerTable = () => {
   const [customerData, setCustomerData] = useState([]);
 
   useEffect(() => {
     getData().then((data) => {
-      console.log(data, "data");
-      setCustomerData(data);
+      const newData = data.map((customer) => {
+        const { transaction } = customer;
+        let totalPoints = 0;
+        const months = [
+          ...new Set(transaction.map((x) => new Date(x.date).getMonth())),
+        ];
+        const monthPoints = (month) => {
+          const monthlyTransactions = transaction.filter(({ date }) => {
+            return new Date(date).getMonth() === month;
+          });
+          const monthlyTotal = monthlyTransactions.reduce(function (
+            sum,
+            transaction
+          ) {
+            let { price } = transaction;
+            if (price > 100) {
+              return 50 + sum + (price - 100) * 2;
+            }
+            if (price <= 100) {
+              return sum + 50;
+            } else return sum;
+          },
+          0);
+          totalPoints += monthlyTotal;
+          return monthlyTotal;
+        };
+        const yearmonths = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const MonthlyTransactions = months.map((month) => {
+          return { [yearmonths[month]]: monthPoints(month) };
+        });
+        console.log(
+          MonthlyTransactions,
+          "monthlytransa",
+          totalPoints,
+          "totalP"
+        );
+        return {
+          id: customer.id,
+          name: customer.firstName + " " + customer.lastName,
+          months: MonthlyTransactions,
+          total: totalPoints,
+        };
+      });
+      setCustomerData(newData);
     });
   }, []);
 
@@ -16,43 +70,11 @@ const CustomerTable = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(customerTransactions);
-      }, 3000);
+      }, 1000);
     });
   };
 
-  const tdPoints = (transactions) => {
-    let totalPoints = 0;
-    console.log(transactions);
-    const monthPoints = (month) => {
-      console.log(month);
-      const monthlyTransactions = transactions.filter(({ date }) => {
-        return new Date(date).getMonth() + 1 == month;
-      });
-      const monthlyTotal = monthlyTransactions.reduce(function (
-        sum,
-        transaction
-      ) {
-        let { price } = transaction;
-        if (price > 100) {
-          return 50 + sum + (price - 100) * 2;
-        }
-        if (price <= 100) {
-          return sum + 50;
-        } else return sum;
-      },
-      0);
-      totalPoints += monthlyTotal;
-      return monthlyTotal;
-    };
-    return (
-      <>
-        {months.map((month) => {
-          return <td key={month}>{monthPoints(month)}</td>;
-        })}
-        <td>{totalPoints}</td>
-      </>
-    );
-  };
+  console.log(customerData, "data in state");
 
   return (
     <div>
@@ -64,18 +86,27 @@ const CustomerTable = () => {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>may</th>
-                    <th>june</th>
-                    <th>july</th>
+                    {customer.months.map((month) => {
+                      return (
+                        <th key={Object.keys(month)[0]}>
+                          {Object.keys(month)[0]}
+                        </th>
+                      );
+                    })}
                     <th>Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
-                      {customer.firstName} {customer.lastName}
-                    </td>
-                    {tdPoints(customer.transaction)}
+                    <td>{customer.name}</td>
+                    {customer.months.map((month) => {
+                      return (
+                        <td key={Object.keys(month)[0]}>
+                          {month[Object.keys(month)[0]]}
+                        </td>
+                      );
+                    })}
+                    <td>{customer.total}</td>
                   </tr>
                 </tbody>
               </table>
