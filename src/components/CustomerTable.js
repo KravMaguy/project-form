@@ -24,8 +24,8 @@ const CustomerTable = () => {
             if (price > 100) {
               return 50 + sum + (price - 100) * 2;
             }
-            if (price <= 100) {
-              return sum + 50;
+            if (price > 50) {
+              return price - 50;
             } else return sum;
           },
           0);
