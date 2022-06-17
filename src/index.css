@@ -321,3 +321,58 @@ th, td {
   margin: 50px auto;
   text-align: center;
 }
+
+
+*, ::after, ::before {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e2e8f0;
+}
+
+.text-xl{
+  font-size: 1.25rem;
+}
+
+.border-2 {
+  border-width: 2px!important;
+}
+
+.border-gray-700 {
+  border-width: 2px;
+} 
+
+.bg-gray-600 {
+  background-color: #3e4d68;
+} 
+
+.text-white {
+  color: white;
+}
+
+.p-3 {
+  padding: 1rem!important;
+}
+
+@media only screen and (min-width: 800px) {
+  .row {
+    display: flex;
+  }
+  .col-1 {
+    width: 25%;
+  }
+  
+  .col-2 {
+    width: 33%;
+  }
+  
+  .col-3 {
+    width: 40%;
+  }
+}
+
+
+.placeholder {
+  width: 225px;
+  height: 135px;
+}

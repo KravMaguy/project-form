@@ -1,3 +1,5 @@
+//pretend this data cannot be accessed from database and needs to be
+//changed on front end
 const vehicleData = [
   {
     make: "Mazda",

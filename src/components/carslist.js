@@ -2,7 +2,20 @@ import { useState, useEffect } from "react";
 import cardata from "./cardata";
 
 // https://assets.codepen.io/19636/deere-challenge.jpg
-// https://codepen.io/kravmaguy/project/editor/DQQygx
+
+// use a map to add the id
+// and then use reduce to find the make
+// i will also not use checkedState
+// I will rather add checked prop to carsdata
+
+// cardata.map you will add an id and a checked property
+// also
+
+// cardata you will use filter or reduce to get the make
+
+// checked boxes will be the the filltered cardata array
+// [{name: "mazda", checked : true}]
+// carsData = [{...car, id:1, isSelected: true},....]
 
 const CarsList = () => {
   const [models, setModals] = useState([]);
@@ -15,6 +28,7 @@ const CarsList = () => {
     const carModals = [];
     cardata.map((car, id) => {
       car.id = id;
+      car.isSelected = false;
       return carModals.includes(car.make) ? null : carModals.push(car.make);
     });
     setCarData(cardata);
@@ -22,6 +36,7 @@ const CarsList = () => {
     const checkedState = new Array(carModals.length).fill(false);
     checkedState[0] = true;
     setCheckedState(checkedState);
+    console.log(carsData, "carsData");
   }, []);
 
   const handleChecked = (e, pos) => {
@@ -51,10 +66,10 @@ const CarsList = () => {
     <div className="border-2 border-gray-700 p-3">
       {" "}
            
-      <div className="row g-4">
+      <div className="row">
         {" "}
                
-        <div className="col-md-3">
+        <div className="col-1">
           {" "}
                    
           <div className="border-2 border-gray-700 p-3">
@@ -77,9 +92,9 @@ const CarsList = () => {
                      
           </div>{" "}
                  
-        </div>{" "}
+        </div>
                
-        <div className="col-md-4">
+        <div className="col-2">
           {" "}
                    
           {displayedCars.map((car) => (
@@ -96,9 +111,9 @@ const CarsList = () => {
             </div>
           ))}{" "}
                  
-        </div>
+        </div>{" "}
                
-        <div className="col-md-5">
+        <div className="col-3">
           {" "}
                    
           <div className="border-2 border-gray-700 p-3">
@@ -107,13 +122,13 @@ const CarsList = () => {
             {!selectedCar && selectedCar !== 0 ? (
               <div>Select a car to display details</div>
             ) : (
-              <div className="grid grid-cols-2 ml-10">
-                <div>
-                  <h2 className="text-xl text-left">
-                    ({carsData[selectedCar].year}) {carsData[selectedCar].make},{" "}
+              <div className="row">
+                <div className="col">
+                  <h2 className="text-xl">
+                    ({carsData[selectedCar].year}) {carsData[selectedCar].make},
                     {carsData[selectedCar].model}
                   </h2>
-                  <div className="text-left">
+                  <div>
                     make : {carsData[selectedCar].make} <br />
                     model : {carsData[selectedCar].model} <br />
                     year : {carsData[selectedCar].year} <br />
@@ -121,7 +136,7 @@ const CarsList = () => {
                     location : {carsData[selectedCar].location} <br />
                   </div>
                 </div>
-                <div className="m-10">
+                <div className="col">
                   <img
                     alt="placeholder"
                     className="placeholder"
@@ -131,11 +146,11 @@ const CarsList = () => {
               </div>
             )}{" "}
                      
-          </div>{" "}
+          </div>
                  
-        </div>{" "}
+        </div>
              
-      </div>{" "}
+      </div>
          
     </div>
   );
